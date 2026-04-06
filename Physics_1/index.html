@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Engineering Physics 1: Capacitors & Capacitance | Interactive Module</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f4f8;
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      color: #1e293b;
+      scroll-behavior: smooth;
+    }
+
+    /* Navigation */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      background: #0f172a;
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      border-bottom: 2px solid #38bdf8;
+    }
+
+    .nav-btn {
+      background: #1e293b;
+      border: none;
+      color: #e2e8f0;
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      transform: translateY(-2px);
+    }
+
+    /* Main container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Sections */
+    .section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .section.active-section {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Cards & styling */
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 1.5rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+      transition: 0.2s;
+      border: 1px solid #e2edf7;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e2a4a 100%);
+      color: white;
+      border-radius: 32px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: none;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      color: #0f172a;
+      border-left: 5px solid #38bdf8;
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin: 1rem 0 0.5rem 0;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .formula {
+      background: #f1f5f9;
+      padding: 1rem;
+      border-radius: 20px;
+      font-family: 'Courier New', 'SF Mono', monospace;
+      font-size: 1.1rem;
+      text-align: center;
+      margin: 1rem 0;
+      border-left: 4px solid #38bdf8;
+      overflow-x: auto;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      padding: 12px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #eef2ff;
+      font-weight: 600;
+    }
+
+    .badge {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+      padding: 0.2rem 0.7rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+
+    .interactive-card {
+      background: #fefce8;
+      border: 1px solid #fde047;
+    }
+
+    input, button.calc-btn {
+      padding: 10px 14px;
+      border-radius: 40px;
+      border: 1px solid #cbd5e1;
+      font-size: 1rem;
+    }
+
+    button.calc-btn {
+      background: #0f172a;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button.calc-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: white;
+    }
+
+    button.calc-btn:hover {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+
+    button.calc-btn:hover svg {
+      stroke: #0f172a;
+    }
+
+    .result {
+      background: #e6f7ff;
+      border-radius: 20px;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 1.5rem;
+      color: #475569;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    .icon-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 1rem;
+      }
+      h1 { font-size: 1.8rem; }
+      .nav-btn { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-bar" id="navbar">
+    <button class="nav-btn" data-section="intro">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 4h16v16H4z" stroke="currentColor" fill="none"/><path d="M9 9h6v6H9z" stroke="currentColor" fill="none"/><path d="M9 4v5M15 4v5M9 15v5M15 15v5M4 9h5M4 15h5M15 9h5M15 15v5" stroke="currentColor"/></svg>
+      Concepts & Physics
+    </button>
+    <button class="nav-btn" data-section="physics">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" fill="none"/></svg>
+      Dielectrics
+    </button>
+    <button class="nav-btn" data-section="energy">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" fill="none"/></svg>
+      Energy Storage
+    </button>
+    <button class="nav-btn" data-section="combinations">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 6h8M8 12h8M8 18h8" stroke="currentColor" fill="none"/><path d="M4 6h2v12H4zM18 6h2v12h-2z" stroke="currentColor" fill="none"/></svg>
+      Series/Parallel
+    </button>
+    <button class="nav-btn" data-section="rc">
+      <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="10" stroke="currentColor" fill="none"/><path d="M12 6v6l4 2" stroke="currentColor" fill="none"/></svg>
+      RC Circuits
+    </button>
+    <button class="nav-btn" data-section="engineering">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" fill="none"/></svg>
+      Engineering
+    </button>
+    <button class="nav-btn" data-section="strategies">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M9 12h6M12 9v6" stroke="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" fill="none"/><path d="M12 8v.01M12 16v.01" stroke="currentColor" stroke-width="2"/></svg>
+      Strategies & Examples
+    </button>
+    <button class="nav-btn" data-section="practice">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" fill="none"/><path d="M14 2v6h6" stroke="currentColor" fill="none"/><path d="M16 13H8M16 17H8M10 9H8" stroke="currentColor"/></svg>
+      Practice Problems
+    </button>
+    <button class="nav-btn" data-section="summary">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" fill="none"/><path d="M14 2v6h6" stroke="currentColor" fill="none"/><path d="M16 13H8M16 17H8M10 9H8" stroke="currentColor"/></svg>
+      Summary & Answers
+    </button>
+    <button class="nav-btn" data-section="calc">
+      <svg viewBox="0 0 24 24" width="16" height="16"><rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor" fill="none"/><path d="M8 7h8M8 11h4M16 11h-2M8 15h8M8 19h4M16 19h-2" stroke="currentColor"/></svg>
+      Calculator
+    </button>
+  </div>
+
+  <div class="container">
+    <!-- INTRO SECTION -->
+    <div id="intro" class="section active-section">
+      <div class="hero">
+        <h1>
+          <svg viewBox="0 0 24 24" width="32" height="32" stroke="white" fill="none"><rect x="4" y="6" width="16" height="12" rx="1" stroke="white"/><path d="M8 10h8M8 14h4" stroke="white"/></svg>
+          Capacitors & Capacitance
+        </h1>
+        <p>Engineering Physics 1 — Complete Module: theory, problem-solving, and interactive tools.</p>
+        <div class="badge">Farads · Dielectrics · Energy · RC Networks</div>
+      </div>
+      <div class="card">
+        <h2>1. Core Concepts of Capacitors</h2>
+        <p>A capacitor is a device that stores electrical energy in an electric field. It consists of two conductors separated by an insulating material called a dielectric. The ability of a capacitor to store charge is measured by its capacitance, denoted by \(C\).</p>
+        <p>The capacitance is defined as the ratio of the charge stored on one plate to the potential difference between the plates:</p>
+        <p>\[C = \frac{Q}{V}\]</p>
+        <p>where \(Q\) is the charge in coulombs and \(V\) is the voltage in volts. The unit of capacitance is the farad (F), where 1 F = 1 C/V.</p>
+        <p>Capacitors are used in electronic circuits for filtering, timing, energy storage, and coupling signals between stages of amplifiers.</p>
+        
+        <h3>2. Physics of Capacitor Operation</h3>
+        <p>When a voltage is applied across a capacitor, charges accumulate on the plates. Positive charge builds up on one plate and negative charge on the other. The electric field between the plates is uniform if the plates are large and close together.</p>
+        <p>The capacitance of a parallel-plate capacitor is given by:</p>
+        <p>\[C = \frac{\kappa \epsilon_0 A}{d}\]</p>
+        <p>where \(\epsilon_0 = 8.85 \times 10^{-12}\) F/m is the permittivity of free space, \(A\) is the area of each plate, \(d\) is the separation between plates, and \(\kappa\) is the dielectric constant.</p>
+        <p>The energy stored in a capacitor is:</p>
+        <p>\[U = \frac{1}{2} C V^2 = \frac{1}{2} \frac{Q^2}{C} = \frac{1}{2} Q V\]</p>
+        <p>This energy is stored in the electric field between the plates.</p>
+      </div>
+    </div>
+
+    <!-- ENERGY STORAGE -->
+    <div id="energy" class="section">
+      <div class="card">
+        <h2>4. Energy Storage in Capacitors</h2>
+        <p>Capacitors store energy in the electric field between their plates. The energy density in the field is uniform for parallel-plate capacitors.</p>
+        <p>The total energy stored is:</p>
+        <p>\[U = \frac{1}{2} C V^2\]</p>
+        <p>where \(C\) is the capacitance and \(V\) is the voltage across the capacitor.</p>
+        <p>Alternative forms:</p>
+        <p>\[U = \frac{1}{2} \frac{Q^2}{C} = \frac{1}{2} Q V\]</p>
+        <p>The energy density \(u\) (energy per unit volume) in the electric field is:</p>
+        <p>\[u = \frac{1}{2} \epsilon E^2\]</p>
+        <p>where \(\epsilon = \kappa \epsilon_0\) is the permittivity of the dielectric and \(E\) is the electric field strength.</p>
+        <p>For parallel-plate capacitors, \(E = V/d\), so:</p>
+        <p>\[u = \frac{1}{2} \kappa \epsilon_0 (V/d)^2\]</p>
+        <p>The total energy can also be expressed as:</p>
+        <p>\[U = u \times \text{volume} = \frac{1}{2} \kappa \epsilon_0 E^2 \times A d\]</p>
+        <p>Since \(C = \kappa \epsilon_0 A / d\), we get \(U = \frac{1}{2} C V^2\), as expected.</p>
+      </div>
+    </div>
+
+    <!-- PHYSICS & DIELECTRICS -->
+    <div id="physics" class="section">
+      <div class="card">
+        <h2>3. Dielectrics</h2>
+        <p>Dielectrics are insulating materials placed between capacitor plates to increase capacitance. The dielectric constant \(\kappa\) (relative permittivity) is the factor by which capacitance increases.</p>
+        <p>\[C = \kappa C_0\]</p>
+        <p>where \(C_0\) is the capacitance without dielectric.</p>
+        <p>Common dielectrics and their properties:</p>
+        <table>
+          <tr><th>Material</th><th>Dielectric Constant \(\kappa\)</th><th>Breakdown Field (MV/m)</th></tr>
+          <tr><td>Vacuum</td><td>1</td><td>∞</td></tr>
+          <tr><td>Air</td><td>1.0006</td><td>3</td></tr>
+          <tr><td>Paper</td><td>3.7</td><td>16</td></tr>
+          <tr><td>Mica</td><td>7</td><td>100</td></tr>
+          <tr><td>Ceramic</td><td>1200+</td><td>10</td></tr>
+        </table>
+        <h3>Dielectric Insertion with Battery Connected (V constant)</h3>
+        <p>When a dielectric is inserted while connected to a battery:</p>
+        <ul>
+          <li>Capacitance increases: \(C \to \kappa C_0\)</li>
+          <li>Charge increases: \(Q \to \kappa Q_0\)</li>
+          <li>Voltage remains constant</li>
+          <li>Electric field remains constant: \(E = V/d\)</li>
+          <li>Energy increases: \(U \to \kappa U_0\)</li>
+        </ul>
+        <h3>Dielectric Insertion with Battery Disconnected (Q constant)</h3>
+        <p>When a dielectric is inserted after disconnecting the battery:</p>
+        <ul>
+          <li>Capacitance increases: \(C \to \kappa C_0\)</li>
+          <li>Charge remains constant</li>
+          <li>Voltage decreases: \(V \to V_0/\kappa\)</li>
+          <li>Electric field decreases: \(E \to E_0/\kappa\)</li>
+          <li>Energy decreases: \(U \to U_0/\kappa\)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- COMBINATIONS -->
+    <div id="combinations" class="section">
+      <div class="card">
+        <h2>5. Series and Parallel Combinations</h2>
+        <p>Capacitors can be connected in series or parallel to achieve desired equivalent capacitance values.</p>
+        
+        <h3>Series Combination</h3>
+        <p>When capacitors are connected in series, they have the same charge Q, and the total voltage is the sum of individual voltages.</p>
+        <p>\[\frac{1}{C_{eq}} = \sum_{i=1}^{n} \frac{1}{C_i}\]</p>
+        <p>For two capacitors: \(\frac{1}{C_{eq}} = \frac{1}{C_1} + \frac{1}{C_2}\), so \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\)</p>
+        <p>The equivalent capacitance is always less than the smallest individual capacitance.</p>
+        
+        <h3>Parallel Combination</h3>
+        <p>When capacitors are connected in parallel, they have the same voltage V, and the total charge is the sum of individual charges.</p>
+        <p>\[C_{eq} = \sum_{i=1}^{n} C_i\]</p>
+        <p>The equivalent capacitance is the sum of all capacitances.</p>
+        
+        <h3>Voltage and Charge Distribution</h3>
+        <ul>
+          <li><strong>Series:</strong> \(V_i = V_{total} \cdot \frac{C_{eq}}{C_i}\), \(Q_i = Q_{total}\)</li>
+          <li><strong>Parallel:</strong> \(V_i = V_{total}\), \(Q_i = Q_{total} \cdot \frac{C_i}{C_{eq}}\)</li>
+        </ul>
+        
+        <h3>Example</h3>
+        <p>Two capacitors: \(C_1 = 2 \, \mu\text{F}\), \(C_2 = 3 \, \mu\text{F}\)</p>
+        <p>Series: \(C_{eq} = \frac{2 \times 3}{2 + 3} = 1.2 \, \mu\text{F}\)</p>
+        <p>Parallel: \(C_{eq} = 2 + 3 = 5 \, \mu\text{F}\)</p>
+      </div>
+    </div>
+
+    <!-- RC CIRCUITS -->
+    <div id="rc" class="section">
+      <div class="card">
+        <h2>6. RC Circuits</h2>
+        <p>RC circuits consist of a resistor and capacitor in series. They exhibit exponential charging and discharging behavior.</p>
+        
+        <h3>Time Constant</h3>
+        <p>The time constant \(\tau = R C\) determines the rate of charging/discharging.</p>
+        <p>Units: R in ohms, C in farads, \(\tau\) in seconds.</p>
+        
+        <h3>Charging</h3>
+        <p>When a voltage \(V_0\) is applied to an initially uncharged capacitor:</p>
+        <p>\[V_c(t) = V_0 (1 - e^{-t/\tau})\]</p>
+        <p>The current decreases exponentially: \(I(t) = \frac{V_0}{R} e^{-t/\tau}\)</p>
+        
+        <h3>Discharging</h3>
+        <p>When the capacitor discharges through the resistor:</p>
+        <p>\[V_c(t) = V_0 e^{-t/\tau}\]</p>
+        <p>The current: \(I(t) = -\frac{V_0}{R} e^{-t/\tau}\)</p>
+        
+        <h3>Time Constants and Percentages</h3>
+        <table>
+          <tr><th>Time</th><th>Charging (% of \(V_0\))</th><th>Discharging (% of \(V_0\))</th></tr>
+          <tr><td>\(\tau\)</td><td>63.2%</td><td>36.8%</td></tr>
+          <tr><td>2\(\tau\)</td><td>86.5%</td><td>13.5%</td></tr>
+          <tr><td>3\(\tau\)</td><td>95.0%</td><td>5.0%</td></tr>
+          <tr><td>4\(\tau\)</td><td>98.2%</td><td>1.8%</td></tr>
+          <tr><td>5\(\tau\)</td><td>99.3%</td><td>0.7%</td></tr>
+        </table>
+        
+        <div class="interactive-card" style="margin-top: 1rem; background:#f1f5f9;">
+          <p><strong>RC Calculator:</strong> Compute voltage at given time.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+            <label>R (kΩ): <input type="number" id="rcR" value="10"></label>
+            <label>C (µF): <input type="number" id="rcC" value="100"></label>
+            <label>V₀ (V): <input type="number" id="rcV0" value="12"></label>
+            <label>t (ms): <input type="number" id="rcTime" value="50"></label>
+            <button class="calc-btn" id="rcChargeBtn">Compute V_c(t)</button>
+          </div>
+          <div id="rcResult" class="result">Click to compute voltage after entered time.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENGINEERING CONSIDERATIONS -->
+    <div id="engineering" class="section">
+      <div class="card">
+        <h2>7. Engineering Considerations</h2>
+        <p>Real-world capacitors have limitations and practical considerations that affect their performance and application.</p>
+        
+        <h3>Capacitor Types and Applications</h3>
+        <ul>
+          <li><strong>Ceramic capacitors:</strong> Small, inexpensive, used for filtering and decoupling in digital circuits. Values from pF to µF.</li>
+          <li><strong>Electrolytic capacitors:</strong> High capacitance (µF to F), polarized, used for power supply filtering and audio coupling.</li>
+          <li><strong>Film capacitors:</strong> High voltage, low loss, used in power electronics and motor run applications.</li>
+          <li><strong>Tantalum capacitors:</strong> High capacitance density, used in portable electronics.</li>
+        </ul>
+        
+        <h3>Key Parameters</h3>
+        <ul>
+          <li><strong>Voltage rating:</strong> Maximum voltage the capacitor can withstand without breakdown.</li>
+          <li><strong>Temperature coefficient:</strong> How capacitance changes with temperature.</li>
+          <li><strong>Equivalent series resistance (ESR):</strong> Internal resistance that causes power dissipation.</li>
+          <li><strong>Dissipation factor:</strong> Measure of energy loss in AC applications.</li>
+          <li><strong>Leakage current:</strong> Small current that flows through the dielectric even when fully charged.</li>
+        </ul>
+        
+        <h3>Failure Modes</h3>
+        <ul>
+          <li><strong>Dielectric breakdown:</strong> Insulation failure at high voltages.</li>
+          <li><strong>Electrolytic dry-out:</strong> Loss of electrolyte in aluminum capacitors over time.</li>
+          <li><strong>Thermal runaway:</strong> Excessive heating due to high ripple current.</li>
+          <li><strong>Mechanical stress:</strong> Cracking of ceramic capacitors under thermal cycling.</li>
+        </ul>
+        
+        <h3>Design Considerations</h3>
+        <ul>
+          <li>Derate voltage rating by 50-80% for reliability.</li>
+          <li>Consider temperature effects on capacitance and lifetime.</li>
+          <li>Minimize ESR for high-frequency applications.</li>
+          <li>Use appropriate capacitor types for the application (electrolytic for DC, ceramic for AC).</li>
+          <li>Consider size, cost, and availability constraints.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- STRATEGIES & EXAMPLES -->
+    <div id="strategies" class="section">
+      <div class="card">
+        <h2>8. Problem-Solving Strategies</h2>
+        <p>Effective problem-solving requires systematic approach and careful attention to units and formulas.</p>
+        
+        <h3>General Strategy</h3>
+        <ol>
+          <li>Identify what is given and what is unknown. Draw circuit diagrams or capacitor geometries.</li>
+          <li>Convert all units to consistent SI units (Farads, meters, seconds, Volts, Coulombs).</li>
+          <li>For capacitor combinations: simplify networks step by step, replacing series/parallel groups with equivalent capacitors.</li>
+          <li>Use fundamental relationships: \(C = Q/V\), \(U = \frac{1}{2}CV^2\), \(\tau = RC\).</li>
+          <li>Check units and reasonableness of answers.</li>
+        </ol>
+        
+        <h3>9. Worked Examples</h3>
+        <div class="grid-2">
+          <div>
+            <h4>Example 1: Parallel-Plate Capacitor</h4>
+            <p>A parallel-plate capacitor has plates of area 0.04 m² separated by 0.002 m of dielectric with \(\kappa = 2.5\). Find the capacitance.</p>
+            <p>\[C = \frac{\kappa \epsilon_0 A}{d} = \frac{2.5 \times 8.85 \times 10^{-12} \times 0.04}{0.002} = 4.425 \times 10^{-10} \, \text{F} = 442.5 \, \text{pF}\]</p>
+          </div>
+          <div>
+            <h4>Example 2: Energy Storage</h4>
+            <p>A 10 µF capacitor is charged to 50 V. Find the stored energy.</p>
+            <p>\[U = \frac{1}{2} C V^2 = \frac{1}{2} \times 10 \times 10^{-6} \times (50)^2 = 0.0125 \, \text{J}\]</p>
+          </div>
+          <div>
+            <h4>Example 3: Series-Parallel Combination</h4>
+            <p>Find \(C_{eq}\) for: \(C_1 = 4 \, \mu\text{F}\), \(C_2 = 6 \, \mu\text{F}\) in parallel, then in series with \(C_3 = 5 \, \mu\text{F}\).</p>
+            <p>\(C_{12} = C_1 + C_2 = 10 \, \mu\text{F}\)</p>
+            <p>\(\frac{1}{C_{eq}} = \frac{1}{C_{12}} + \frac{1}{C_3} = \frac{1}{10} + \frac{1}{5} = 0.3\)</p>
+            <p>\(C_{eq} = \frac{1}{0.3} = 3.33 \, \mu\text{F}\)</p>
+          </div>
+          <div>
+            <h4>Example 4: RC Circuit</h4>
+            <p>An RC circuit has R = 2 kΩ, C = 47 µF. Find time constant and voltage after 0.1 s when charging from 0 V to 12 V.</p>
+            <p>\(\tau = RC = 2000 \times 47 \times 10^{-6} = 0.094 \, \text{s}\)</p>
+            <p>\(V(t) = V_0 (1 - e^{-t/\tau}) = 12(1 - e^{-0.1/0.094}) = 12(1 - e^{-1.064}) = 12(1 - 0.345) = 7.86 \, \text{V}\)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE PROBLEMS -->
+    <div id="practice" class="section">
+      <div class="card">
+        <h2>10. Practice Problems</h2>
+        <p>Solve these problems to test your understanding. Answers are provided in the Summary section.</p>
+        
+        <h3>Problem 1</h3>
+        <p>A parallel-plate capacitor has plates of area 0.02 m² separated by 0.001 m. The dielectric is mica (\(\kappa = 7\)). Find the capacitance.</p>
+        
+        <h3>Problem 2</h3>
+        <p>A 5 µF capacitor is charged to 100 V. What is the stored energy? If the voltage is doubled, what happens to the energy?</p>
+        
+        <h3>Problem 3</h3>
+        <p>Three capacitors: 2 µF, 3 µF, and 6 µF are connected in series. Find the equivalent capacitance.</p>
+        
+        <h3>Problem 4</h3>
+        <p>An RC circuit has R = 1 kΩ and C = 20 µF. The capacitor is initially uncharged. A 10 V battery is connected at t = 0. Find the voltage across the capacitor after 0.1 s.</p>
+        
+        <h3>Problem 5</h3>
+        <p>A dielectric slab (\(\kappa = 4\)) is inserted between the plates of a 10 µF capacitor while it remains connected to a 50 V battery. What happens to the charge, voltage, and stored energy?</p>
+        
+        <h3>Problem 6</h3>
+        <p>Two capacitors, 4 µF and 6 µF, are connected in parallel. This combination is then connected in series with an 8 µF capacitor. Find the equivalent capacitance.</p>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE CALCULATOR MODULE -->
+    <div id="calc" class="section">
+      <div class="card">
+        <h2>
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h4M16 11h-2M8 15h8M8 19h4M16 19h-2"/></svg>
+          Interactive Engineering Toolkit
+        </h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Parallel Plate Capacitance</h3>
+            <label>Area A (cm²): <input type="number" id="areaCm2" value="50"></label><br>
+            <label>Separation d (mm): <input type="number" id="sepMm" value="1" step="0.1"></label><br>
+            <label>Dielectric κ: <input type="number" id="kappa" value="1"></label><br>
+            <button class="calc-btn" id="calcCapBtn">Compute C</button>
+            <div id="capResult" class="result">Capacitance: -- pF</div>
+          </div>
+          <div class="card">
+            <h3>Energy & Charge</h3>
+            <label>C (µF): <input type="number" id="energyC" value="10"></label><br>
+            <label>Voltage (V): <input type="number" id="energyV" value="50"></label><br>
+            <button class="calc-btn" id="calcEnergyBtn">Compute Q & U</button>
+            <div id="energyResult" class="result">Charge: -- , Energy: --</div>
+          </div>
+          <div class="card">
+            <h3>Series Equivalent</h3>
+            <label>C1 (µF): <input type="number" id="sC1" value="4"></label>
+            <label>C2 (µF): <input type="number" id="sC2" value="6"></label>
+            <label>C3 (µF): <input type="number" id="sC3" value="0" placeholder="optional"></label>
+            <button class="calc-btn" id="seriesBtn">Series Ceq</button>
+            <div id="seriesRes" class="result">Ceq (µF): --</div>
+          </div>
+          <div class="card">
+            <h3>Parallel Equivalent</h3>
+            <label>C1 (µF): <input type="number" id="pC1" value="10"></label>
+            <label>C2 (µF): <input type="number" id="pC2" value="20"></label>
+            <button class="calc-btn" id="parallelBtn">Parallel Ceq</button>
+            <div id="parallelRes" class="result">Ceq (µF): --</div>
+          </div>
+          <div class="card">
+            <h3>RC Time & Voltage</h3>
+            <label>R (kΩ): <input type="number" id="calcRk" value="5"></label>
+            <label>C (µF): <input type="number" id="calcCuF" value="100"></label>
+            <label>Time t (ms): <input type="number" id="calcTms" value="200"></label>
+            <label>Supply V0 (V): <input type="number" id="calcVs" value="12"></label>
+            <button class="calc-btn" id="calcRcVoltageBtn">Voltage at t</button>
+            <div id="rcVoltageResult" class="result">Vc = -- V (charging)</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Dielectric Quick Case (constant Q)</h3>
+        <label>Initial C0 (pF): <input type="number" id="dielC0" value="100"></label>
+        <label>Initial V0 (V): <input type="number" id="dielV0" value="500"></label>
+        <label>κ (dielectric): <input type="number" id="dielK" value="4"></label>
+        <button class="calc-btn" id="dielCalcBtn">Insert dielectric (Q const)</button>
+        <div id="dielResult" class="result">New C, V, Energy change:</div>
+      </div>
+    </div>
+    <footer>
+      Engineering Physics 1 — Capacitors & Capacitance | Interactive Module | Theory + Problem Solving
+    </footer>
+
+    <!-- SUMMARY & ANSWERS -->
+    <div id="summary" class="section">
+      <div class="card">
+        <h2>11. Summary</h2>
+        <p>This module covered the fundamental concepts of capacitors and capacitance, including their operation, energy storage, combinations, and RC circuits.</p>
+        
+        <h3>Key Formulas</h3>
+        <ul>
+          <li>Capacitance: \(C = \frac{Q}{V}\)</li>
+          <li>Parallel-plate: \(C = \frac{\kappa \epsilon_0 A}{d}\)</li>
+          <li>Energy: \(U = \frac{1}{2} C V^2 = \frac{1}{2} \frac{Q^2}{C} = \frac{1}{2} Q V\)</li>
+          <li>Series: \(\frac{1}{C_{eq}} = \sum \frac{1}{C_i}\)</li>
+          <li>Parallel: \(C_{eq} = \sum C_i\)</li>
+          <li>Time constant: \(\tau = R C\)</li>
+          <li>Charging: \(V(t) = V_0 (1 - e^{-t/\tau})\)</li>
+          <li>Discharging: \(V(t) = V_0 e^{-t/\tau}\)</li>
+        </ul>
+        
+        <h3>Important Concepts</h3>
+        <ul>
+          <li>Dielectrics increase capacitance by factor \(\kappa\)</li>
+          <li>Energy is stored in the electric field between plates</li>
+          <li>Series capacitors have same charge, voltage divides</li>
+          <li>Parallel capacitors have same voltage, charge adds</li>
+          <li>RC circuits exhibit exponential charging/discharging</li>
+          <li>Real capacitors have voltage ratings, ESR, and leakage</li>
+        </ul>
+        
+        <h3>12. Answers to Practice Problems</h3>
+        
+        <h4>Problem 1</h4>
+        <p>\(C = \frac{7 \times 8.85 \times 10^{-12} \times 0.02}{0.001} = 1.241 \times 10^{-9} \, \text{F} = 1.241 \, \text{nF}\)</p>
+        
+        <h4>Problem 2</h4>
+        <p>\(U = \frac{1}{2} \times 5 \times 10^{-6} \times (100)^2 = 0.025 \, \text{J}\)</p>
+        <p>When voltage doubles to 200 V, energy becomes \(4 \times 0.025 = 0.1 \, \text{J}\) (increases by factor of 4).</p>
+        
+        <h4>Problem 3</h4>
+        <p>\(\frac{1}{C_{eq}} = \frac{1}{2} + \frac{1}{3} + \frac{1}{6} = 1\)</p>
+        <p>\(C_{eq} = 1 \, \mu\text{F}\)</p>
+        
+        <h4>Problem 4</h4>
+        <p>\(\tau = 1000 \times 20 \times 10^{-6} = 0.02 \, \text{s}\)</p>
+        <p>\(V(0.1) = 10(1 - e^{-0.1/0.02}) = 10(1 - e^{-5}) = 10(1 - 0.0067) = 9.93 \, \text{V}\)</p>
+        
+        <h4>Problem 5</h4>
+        <p>Charge remains constant: \(Q = 10 \times 10^{-6} \times 50 = 5 \times 10^{-4} \, \text{C}\)</p>
+        <p>Capacitance becomes \(4 \times 10 \times 10^{-6} = 40 \, \mu\text{F}\)</p>
+        <p>Voltage becomes \(V = Q/C = 5 \times 10^{-4} / 4 \times 10^{-5} = 12.5 \, \text{V}\)</p>
+        <p>Energy becomes \(\frac{1}{2} Q V = \frac{1}{2} \times 5 \times 10^{-4} \times 12.5 = 3.125 \times 10^{-4} \, \text{J}\) (decreases)</p>
+        
+        <h4>Problem 6</h4>
+        <p>\(C_{12} = 4 + 6 = 10 \, \mu\text{F}\)</p>
+        <p>\(\frac{1}{C_{eq}} = \frac{1}{10} + \frac{1}{8} = 0.225\)</p>
+        <p>\(C_{eq} = \frac{1}{0.225} = 4.44 \, \mu\text{F}\)</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Navigation Tabs
+    const sections = ['intro', 'physics', 'energy', 'combinations', 'rc', 'engineering', 'strategies', 'practice', 'summary', 'calc'];
+    const navBtns = document.querySelectorAll('.nav-btn');
+    function showSection(sectionId) {
+      sections.forEach(id => {
+        const sec = document.getElementById(id);
+        if(sec) sec.classList.remove('active-section');
+      });
+      const activeSec = document.getElementById(sectionId);
+      if(activeSec) activeSec.classList.add('active-section');
+      navBtns.forEach(btn => {
+        if(btn.dataset.section === sectionId) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+    }
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const secName = btn.dataset.section;
+        if(secName && sections.includes(secName)) showSection(secName);
+      });
+    });
+    document.querySelector('.nav-btn[data-section="intro"]').classList.add('active');
+
+    // Parallel Plate Calculator
+    document.getElementById('calcCapBtn').addEventListener('click', () => {
+      let areaCm2 = parseFloat(document.getElementById('areaCm2').value);
+      let d_mm = parseFloat(document.getElementById('sepMm').value);
+      let kappa = parseFloat(document.getElementById('kappa').value);
+      if(isNaN(areaCm2) || isNaN(d_mm) || isNaN(kappa)) return;
+      let A_m2 = areaCm2 * 1e-4;
+      let d_m = d_mm * 1e-3;
+      let eps0 = 8.85e-12;
+      let C_farads = (kappa * eps0 * A_m2) / d_m;
+      let C_pF = C_farads * 1e12;
+      document.getElementById('capResult').innerHTML = `Capacitance: ${C_pF.toFixed(2)} pF  (${(C_farads*1e9).toFixed(3)} nF)`;
+    });
+
+    // Energy & charge
+    document.getElementById('calcEnergyBtn').addEventListener('click', () => {
+      let c = parseFloat(document.getElementById('energyC').value);
+      let v = parseFloat(document.getElementById('energyV').value);
+      if(isNaN(c) || isNaN(v)) return;
+      let C_f = c * 1e-6;
+      let Q = C_f * v;
+      let U = 0.5 * C_f * v * v;
+      document.getElementById('energyResult').innerHTML = `Charge Q = ${(Q*1e6).toFixed(2)} µC &nbsp;&nbsp; Energy U = ${(U*1000).toFixed(3)} mJ (${U.toExponential(3)} J)`;
+    });
+
+    // Series equivalent
+    document.getElementById('seriesBtn').addEventListener('click', () => {
+      let c1 = parseFloat(document.getElementById('sC1').value);
+      let c2 = parseFloat(document.getElementById('sC2').value);
+      let c3 = parseFloat(document.getElementById('sC3').value);
+      let inv = 0;
+      if(!isNaN(c1) && c1>0) inv += 1/c1;
+      if(!isNaN(c2) && c2>0) inv += 1/c2;
+      if(!isNaN(c3) && c3>0) inv += 1/c3;
+      if(inv === 0) return;
+      let ceq = 1/inv;
+      document.getElementById('seriesRes').innerHTML = `Ceq (series) = ${ceq.toFixed(3)} µF`;
+    });
+    // Parallel equivalent
+    document.getElementById('parallelBtn').addEventListener('click', () => {
+      let p1 = parseFloat(document.getElementById('pC1').value);
+      let p2 = parseFloat(document.getElementById('pC2').value);
+      if(isNaN(p1)) p1=0;
+      if(isNaN(p2)) p2=0;
+      let ceq = p1 + p2;
+      document.getElementById('parallelRes').innerHTML = `Ceq (parallel) = ${ceq.toFixed(3)} µF`;
+    });
+
+    // RC voltage at time (charging)
+    document.getElementById('calcRcVoltageBtn').addEventListener('click', () => {
+      let Rk = parseFloat(document.getElementById('calcRk').value);
+      let CuF = parseFloat(document.getElementById('calcCuF').value);
+      let t_ms = parseFloat(document.getElementById('calcTms').value);
+      let Vs = parseFloat(document.getElementById('calcVs').value);
+      if(isNaN(Rk) || isNaN(CuF) || isNaN(t_ms) || isNaN(Vs)) return;
+      let R_ohm = Rk * 1000;
+      let C_farad = CuF * 1e-6;
+      let tau = R_ohm * C_farad;
+      let t_sec = t_ms / 1000;
+      let vc = Vs * (1 - Math.exp(-t_sec / tau));
+      document.getElementById('rcVoltageResult').innerHTML = `τ = ${tau.toFixed(3)} s &nbsp; | Vc(${t_ms} ms) = ${vc.toFixed(2)} V (Charging from 0)`;
+    });
+
+    // RC interactive on RC section
+    document.getElementById('rcChargeBtn').addEventListener('click', () => {
+      let Rk = parseFloat(document.getElementById('rcR').value);
+      let Cuf = parseFloat(document.getElementById('rcC').value);
+      let Vs = parseFloat(document.getElementById('rcV0').value);
+      let t_ms = parseFloat(document.getElementById('rcTime').value);
+      if(isNaN(Rk) || isNaN(Cuf) || isNaN(Vs) || isNaN(t_ms)) return;
+      let R = Rk * 1000;
+      let C = Cuf * 1e-6;
+      let tau = R * C;
+      let t_sec = t_ms / 1000;
+      let vc = Vs * (1 - Math.exp(-t_sec / tau));
+      document.getElementById('rcResult').innerHTML = `τ = ${tau.toFixed(3)} s → Voltage after ${t_ms} ms = ${vc.toFixed(2)} V (charging)`;
+    });
+
+    // Dielectric constant Q case
+    document.getElementById('dielCalcBtn').addEventListener('click', () => {
+      let C0pF = parseFloat(document.getElementById('dielC0').value);
+      let V0 = parseFloat(document.getElementById('dielV0').value);
+      let k = parseFloat(document.getElementById('dielK').value);
+      if(isNaN(C0pF) || isNaN(V0) || isNaN(k)) return;
+      let C0 = C0pF * 1e-12;
+      let Q = C0 * V0;
+      let Cnew = C0 * k;
+      let Vnew = Q / Cnew;
+      let U0 = 0.5 * C0 * V0 * V0;
+      let Unew = 0.5 * Cnew * Vnew * Vnew;
+      document.getElementById('dielResult').innerHTML = `New C = ${(Cnew*1e12).toFixed(1)} pF, New V = ${Vnew.toFixed(1)} V<br> Energy change: ${(Unew*1e6).toFixed(2)} µJ (was ${(U0*1e6).toFixed(2)} µJ)`;
+    });
+
+    // practice answer toggle
+    const pracBtn = document.getElementById('practiceAnsBtn');
+    const pracDiv = document.getElementById('practiceAns');
+    if(pracBtn){
+      pracBtn.addEventListener('click', () => {
+        if(pracDiv.style.display === 'none' || pracDiv.style.display === '') pracDiv.style.display = 'block';
+        else pracDiv.style.display = 'none';
+      });
+    }
+    // MathJax for formulas
+    const script = document.createElement('script');
+    script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+    script.async = true;
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>
